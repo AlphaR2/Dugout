@@ -3,15 +3,15 @@ import { motion } from "framer-motion";
 import { FaPlayCircle } from "react-icons/fa";
 import { GiSoccerBall, GiSoccerField, GiWhistle } from "react-icons/gi";
 import { BsPersonFill } from "react-icons/bs";
-import ActiveGroups from "@/components/active";
-import LiveMatches from "@/components/live";
-import HowItWorks from "@/components/workings";
+import ActiveGroups from "@/components/Active";
+import LiveMatches from "@/components/Live";
+import HowItWorks from "@/components/Workings";
 
 export default function Home() {
   return (
     <main className="min-h-screen w-full bg-[#b0720c] overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-screen pt-24 mb-44">
+      <section className="relative min-h-screen pt-24 pb-12 mb-44">
         {/* Animated Background Layers */}
         <div className="absolute inset-0">
           {/* Diagonal Sections */}

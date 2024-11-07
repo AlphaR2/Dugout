@@ -2,113 +2,28 @@
 "use client";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { FaBolt, FaCalendar, FaClock } from "react-icons/fa";
+import { FaBolt, FaCalendar } from "react-icons/fa";
+import { useMatches } from "../../utils/plData";
 
-// Simplified TypeScript Interfaces
-interface Team {
-  name: string;
-  logo: string;
-  score?: number;
-}
+type LeagueCode = "PL" | "PD"; // Premier League or Primera División
+type TabType = "live" | "upcoming";
 
-interface BaseMatch {
-  id: string;
-  league: string;
-  homeTeam: Team;
-  awayTeam: Team;
-}
+const LiveMatches = () => {
+  const [activeTab, setActiveTab] = useState<TabType>("live");
+  const [activeLeague, setActiveLeague] = useState<LeagueCode>("PL");
 
-interface LiveMatch extends BaseMatch {
-  minute: number;
-  isLive: boolean;
-}
+  const {
+    matchesData,
+    currentMatchday,
+    nextMatchday,
+    error,
+    isLoading,
+    status,
+  } = useMatches(activeLeague);
 
-interface UpcomingMatch extends BaseMatch {
-  kickoff: string;
-}
+  const { live, upcoming } = matchesData;
 
-const LiveMatches: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"live" | "upcoming">("live");
-
-  const liveMatches: LiveMatch[] = [
-    {
-      id: "1",
-      league: "Premier League",
-      homeTeam: {
-        name: "Arsenal",
-        score: 2,
-        logo: "/teams/arsenal.png",
-      },
-      awayTeam: {
-        name: "Chelsea",
-        score: 1,
-        logo: "/teams/chelsea.png",
-      },
-      minute: 67,
-      isLive: true,
-    },
-    {
-      id: "2",
-      league: "La Liga",
-      homeTeam: {
-        name: "Barcelona",
-        score: 3,
-        logo: "/teams/barcelona.png",
-      },
-      awayTeam: {
-        name: "Real Madrid",
-        score: 2,
-        logo: "/teams/madrid.png",
-      },
-      minute: 75,
-      isLive: true,
-    },
-    {
-      id: "3",
-      league: "Bundesliga",
-      homeTeam: {
-        name: "Bayern",
-        score: 1,
-        logo: "/teams/bayern.png",
-      },
-      awayTeam: {
-        name: "Dortmund",
-        score: 1,
-        logo: "/teams/dortmund.png",
-      },
-      minute: 34,
-      isLive: true,
-    },
-  ];
-
-  const upcomingMatches: UpcomingMatch[] = [
-    {
-      id: "4",
-      league: "Premier League",
-      homeTeam: {
-        name: "Liverpool",
-        logo: "/teams/liverpool.png",
-      },
-      awayTeam: {
-        name: "Man United",
-        logo: "/teams/united.png",
-      },
-      kickoff: "Today, 20:45",
-    },
-    {
-      id: "5",
-      league: "Serie A",
-      homeTeam: {
-        name: "Milan",
-        logo: "/teams/milan.png",
-      },
-      awayTeam: {
-        name: "Inter",
-        logo: "/teams/inter.png",
-      },
-      kickoff: "Today, 21:00",
-    },
-  ];
+  console.log(upcoming);
 
   return (
     <div className="py-16 bg-[#000610]/50">
@@ -122,12 +37,25 @@ const LiveMatches: React.FC = () => {
           Match Center
         </h2>
         <p className="text-[#e5e5e5] text-lg">
-          Track live scores and upcoming fixtures
+          Track live scores and upcoming fixtures of enabled leagues
         </p>
       </motion.div>
 
-      {/* Tabs */}
-      <div className="max-w-6xl mx-auto px-4 mb-8">
+      {isLoading && (
+        <div className="py-16 bg-[#000610]/50 min-h-[500px] flex items-center justify-center">
+          <div className="text-white">Loading matches...</div>
+        </div>
+      )}
+
+      {error && (
+        <div className="py-16 bg-[#000610]/50 min-h-[500px] flex items-center justify-center">
+          <div className="text-red-500">Error: {error}</div>
+        </div>
+      )}
+
+      {/* Tabs and League Selector */}
+      <div className="max-w-6xl mx-auto px-4 mb-8 flex justify-between items-center">
+        {/* Match Type Tabs */}
         <div className="inline-flex bg-[#14213d]/50 backdrop-blur-sm p-1 rounded-xl">
           {[
             { id: "live" as const, label: "Live Matches", icon: FaBolt },
@@ -151,13 +79,46 @@ const LiveMatches: React.FC = () => {
             </motion.button>
           ))}
         </div>
+
+        {/* League Selector */}
+        <div className="inline-flex bg-[#14213d]/50 backdrop-blur-sm p-1 rounded-xl">
+          {[
+            { id: "PL" as const, label: "Premier League" },
+            { id: "PD" as const, label: "La Liga" },
+          ].map((league) => (
+            <motion.button
+              key={league.id}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setActiveLeague(league.id)}
+              className={`
+                px-6 py-3 rounded-lg font-medium transition-all
+                ${
+                  activeLeague === league.id
+                    ? "bg-[#fca311] text-black"
+                    : "text-white hover:bg-white/5"
+                }
+              `}
+            >
+              {league.label}
+            </motion.button>
+          ))}
+        </div>
       </div>
 
       {/* Matches List */}
       <div className="max-w-3xl mx-auto px-4">
+        {activeTab === "upcoming" && (
+          <div className="text-center mb-6">
+            <span className="text-white/70">
+              Matchday {nextMatchday}{" "}
+              {/* Show next matchday for upcoming matches */}
+            </span>
+          </div>
+        )}
+
         <div className="space-y-4">
-          {(activeTab === "live" ? liveMatches : upcomingMatches).map(
-            (match, index) => (
+          {(activeTab === "live" ? live : upcoming).map(
+            (match, index: number) => (
               <motion.div
                 key={match.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -165,12 +126,12 @@ const LiveMatches: React.FC = () => {
                 transition={{ delay: index * 0.1 }}
                 className="group bg-[#14213d]/40 backdrop-blur-sm rounded-xl p-4 border border-white/5 hover:border-[#fca311]/20 transition-all duration-500"
               >
-                {/* League Name */}
+                {/* Match Status */}
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-sm font-medium text-white bg-white/5 px-3 py-1 rounded-full">
-                    {match.league}
+                    {match.formattedDate}
                   </span>
-                  {"minute" in match ? (
+                  {match.status === "LIVE" || match.status === "IN_PLAY" ? (
                     <div className="flex items-center gap-2 bg-red-500/10 px-3 py-1 rounded-full">
                       <motion.div
                         animate={{ opacity: [1, 0.5, 1] }}
@@ -178,13 +139,12 @@ const LiveMatches: React.FC = () => {
                         className="w-2 h-2 bg-red-500 rounded-full"
                       />
                       <span className="text-sm text-red-500 font-medium">
-                        {match.minute}'
+                        LIVE
                       </span>
                     </div>
                   ) : (
-                    <div className="flex items-center gap-2 text-[#e5e5e5]">
-                      <FaClock className="text-xs" />
-                      <span className="text-sm">{match.kickoff}</span>
+                    <div className="text-sm text-[#e5e5e5]">
+                      {match.formattedTime}
                     </div>
                   )}
                 </div>
@@ -195,16 +155,16 @@ const LiveMatches: React.FC = () => {
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-white/5 rounded-lg p-2 group-hover:bg-white/10 transition-colors">
                         <img
-                          src={match.homeTeam.logo}
+                          src={match.homeTeam.crest}
                           alt={match.homeTeam.name}
                           className="w-full h-full object-contain"
                         />
                       </div>
                       <span className="text-white font-medium">
-                        {match.homeTeam.name}
+                        {match.homeTeam.shortName}
                       </span>
                     </div>
-                    {"score" in match.homeTeam && (
+                    {match.homeTeam.score !== null && (
                       <span className="text-2xl font-bold text-[#fca311]">
                         {match.homeTeam.score}
                       </span>
@@ -214,18 +174,18 @@ const LiveMatches: React.FC = () => {
                   <div className="px-4 text-white/30">vs</div>
 
                   <div className="flex items-center gap-4 flex-1 justify-end">
-                    {"score" in match.awayTeam && (
+                    {match.awayTeam.score !== null && (
                       <span className="text-2xl font-bold text-[#fca311]">
                         {match.awayTeam.score}
                       </span>
                     )}
                     <div className="flex items-center gap-3">
                       <span className="text-white font-medium">
-                        {match.awayTeam.name}
+                        {match.awayTeam.shortName}
                       </span>
                       <div className="w-10 h-10 bg-white/5 rounded-lg p-2 group-hover:bg-white/10 transition-colors">
                         <img
-                          src={match.awayTeam.logo}
+                          src={match.awayTeam.crest}
                           alt={match.awayTeam.name}
                           className="w-full h-full object-contain"
                         />
@@ -235,6 +195,12 @@ const LiveMatches: React.FC = () => {
                 </div>
               </motion.div>
             )
+          )}
+
+          {(activeTab === "live" ? live : upcoming).length === 0 && (
+            <div className="text-center py-32 text-white/50">
+              No {activeTab} matches at the moment
+            </div>
           )}
         </div>
       </div>

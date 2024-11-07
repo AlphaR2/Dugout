@@ -29,11 +29,11 @@ const Navigation = () => {
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="fixed top-0  left-28 -translate-x-1/2 z-50 w-full max-w-4xl px-4"
+        className="fixed top-0 self-center  -translate-x-1/2 z-50 w-full max-w-4xl px-4"
       >
         <nav
           className={`
-            relative  rounded-bl-2xl rounded-br-2xl p-2 transition-all duration-300
+            relative rounded-bl-2xl rounded-br-2xl p-2 transition-all duration-300
             ${
               isScrolled
                 ? "bg-[#00050c]/80 backdrop-blur-xl  border-[#fca311]/10"

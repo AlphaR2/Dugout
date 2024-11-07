@@ -61,7 +61,7 @@ const HowItWorks = () => {
               )}
 
               {/* Step Content */}
-              <div className="relative bg-[#14213d]/40 backdrop-blur-sm rounded-xl p-8 border border-white/5 hover:border-[#fca311]/20 transition-all duration-500">
+              <div className="relative h-64 bg-[#14213d]/40 backdrop-blur-sm rounded-xl p-8 border border-white/5 hover:border-[#fca311]/20 transition-all duration-500">
                 <div className="text-center">
                   {/* Icon Container */}
                   <motion.div

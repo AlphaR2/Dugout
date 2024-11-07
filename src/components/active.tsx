@@ -36,7 +36,7 @@ const ActiveGroups = () => {
   ];
 
   return (
-    <div className="py-20  bg-[#000610]/50 border-b border-b-[#fca311]/50 backdrop-blur-sm">
+    <div className="py-20  bg-[#000610]/50  backdrop-blur-sm">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
