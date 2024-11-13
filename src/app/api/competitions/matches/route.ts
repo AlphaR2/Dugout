@@ -3,25 +3,9 @@ const API_TOKEN: any = process.env.NEXT_PUBLIC_FOOTBALL_API_TOKEN;
 const BASE_URL = "https://api.football-data.org/v4";
 // https://api.football-data.org/v4/matches
 
-export async function GET(
-  request: Request,
-  { params }: { params: { code: string } }
-) {
+export async function GET(request: Request) {
   try {
-    const code = params.code.toUpperCase();
-
-    // Validate competition code
-    if (code !== "PL" && code !== "PD") {
-      return NextResponse.json(
-        {
-          message:
-            "Invalid competition code. Use PL for Premier League or PD for La Liga",
-        },
-        { status: 400 }
-      );
-    }
-
-    const response = await fetch(`${BASE_URL}/competitions/${code}/matches`, {
+    const response = await fetch(`${BASE_URL}/matches`, {
       headers: {
         "X-Auth-Token": API_TOKEN,
       },
@@ -32,8 +16,6 @@ export async function GET(
     }
 
     const data = await response.json();
-
-    console.log(data);
 
     return NextResponse.json(data);
   } catch (error: any) {

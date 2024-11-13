@@ -1,4 +1,3 @@
-// components/LiveMatches.tsx
 "use client";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -23,7 +22,7 @@ const LiveMatches = () => {
 
   const { live, upcoming } = matchesData;
 
-  console.log(upcoming);
+  console.log(live);
 
   return (
     <div className="py-16 bg-[#000610]/50">
