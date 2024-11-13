@@ -1,4 +1,5 @@
-import Navigation from "@/components/Nav";
+// import Navigation from "@/components/Nav";
+import Navigation from "@/components/nav";
 
 export default function DefaultLayout({
   children,

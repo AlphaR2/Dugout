@@ -4,7 +4,7 @@ import { FaPlayCircle } from "react-icons/fa";
 import { GiSoccerBall, GiSoccerField, GiWhistle } from "react-icons/gi";
 import { BsPersonFill } from "react-icons/bs";
 import ActiveGroups from "@/components/Active";
-import LiveMatches from "@/components/Live";
+import LiveMatches from "@/components/live";
 import HowItWorks from "@/components/Workings";
 
 export default function Home() {
