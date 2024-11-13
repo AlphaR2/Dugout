@@ -3,10 +3,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
-  FaUsers,
   FaTrophy,
   FaFutbol,
-  FaInbox,
   FaPlus,
   FaStar,
   FaChevronRight,
@@ -14,9 +12,8 @@ import {
 import OnboardingModal from "@/components/modals/Onboarding";
 import InfoButton from "@/components/ui/Infobutton";
 import TeamFormation from "@/components/team/TeamFormation";
-// import TeamFormation from "@/components/team/TeamFormation";
-// import { Badge } from "@/components/ui/badge";
-import { Club, Player, Group } from "../../../types/club";
+
+import { Club } from "../../../types/club";
 import { useOnboarding } from "../../../hooks/useOnboarding";
 
 // Mock selected team data
@@ -59,10 +56,8 @@ const userGroups = [
 export default function DashboardPage() {
   const {
     showOnboarding,
-    hasSeenOnboarding,
     handleOnboardingComplete,
     handleOnboardingOpen,
-    handleOnboardingClose,
   } = useOnboarding();
 
   const [showTeamView, setShowTeamView] = useState(false);

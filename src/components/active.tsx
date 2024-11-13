@@ -1,7 +1,7 @@
 // components/ActiveGroups.tsx
 "use client";
 import { motion } from "framer-motion";
-import { FaUsers, FaClock, FaTrophy, FaBolt } from "react-icons/fa";
+import { FaUsers, FaClock, FaTrophy } from "react-icons/fa";
 import { FaPeopleGroup } from "react-icons/fa6";
 
 const ActiveGroups = () => {

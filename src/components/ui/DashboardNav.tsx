@@ -11,7 +11,6 @@ import {
   FaCog,
   FaBars,
   FaTimes,
-  FaWallet,
 } from "react-icons/fa";
 
 const navItems = [

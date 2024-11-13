@@ -1,13 +1,7 @@
 // components/HowItWorks.tsx
 "use client";
 import { motion } from "framer-motion";
-import {
-  FaUsers,
-  FaFutbol,
-  FaTrophy,
-  FaCrown,
-  FaChartLine,
-} from "react-icons/fa";
+import { FaUsers, FaCrown } from "react-icons/fa";
 import { GiWhistle } from "react-icons/gi";
 
 const steps = [

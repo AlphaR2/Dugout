@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { FaBolt, FaCalendar } from "react-icons/fa";
 import { useMatches } from "../../utils/plData";
+import Image from "next/image";
 
 type LeagueCode = "PL" | "PD"; // Premier League or Primera División
 type TabType = "live" | "upcoming";
@@ -11,14 +12,8 @@ const LiveMatches = () => {
   const [activeTab, setActiveTab] = useState<TabType>("live");
   const [activeLeague, setActiveLeague] = useState<LeagueCode>("PL");
 
-  const {
-    matchesData,
-    currentMatchday,
-    nextMatchday,
-    error,
-    isLoading,
-    status,
-  } = useMatches(activeLeague);
+  const { matchesData, nextMatchday, error, isLoading } =
+    useMatches(activeLeague);
 
   const { live, upcoming } = matchesData;
 
@@ -153,7 +148,7 @@ const LiveMatches = () => {
                   <div className="flex items-center gap-4 flex-1">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-white/5 rounded-lg p-2 group-hover:bg-white/10 transition-colors">
-                        <img
+                        <Image
                           src={match.homeTeam.crest}
                           alt={match.homeTeam.name}
                           className="w-full h-full object-contain"
@@ -183,7 +178,7 @@ const LiveMatches = () => {
                         {match.awayTeam.shortName}
                       </span>
                       <div className="w-10 h-10 bg-white/5 rounded-lg p-2 group-hover:bg-white/10 transition-colors">
-                        <img
+                        <Image
                           src={match.awayTeam.crest}
                           alt={match.awayTeam.name}
                           className="w-full h-full object-contain"

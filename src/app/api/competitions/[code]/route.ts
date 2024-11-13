@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-const API_TOKEN: any = process.env.NEXT_PUBLIC_FOOTBALL_API_TOKEN;
+const API_TOKEN = process.env.NEXT_PUBLIC_FOOTBALL_API_TOKEN!;
 const BASE_URL = "https://api.football-data.org/v4";
 // https://api.football-data.org/v4/matches
 

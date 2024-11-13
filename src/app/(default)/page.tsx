@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { FaPlayCircle } from "react-icons/fa";
-import { GiSoccerBall, GiSoccerField, GiWhistle } from "react-icons/gi";
+import { GiSoccerBall, GiWhistle } from "react-icons/gi";
 import { BsPersonFill } from "react-icons/bs";
 import LiveMatches from "@/components/live";
 import ActiveGroups from "@/components/active";

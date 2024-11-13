@@ -202,7 +202,7 @@ const OnboardingModal = ({ isOpen, onClose }: OnboardingModalProps) => {
                     {clubData.name}
                   </h3>
                   {clubData.slogan && (
-                    <p className="text-gray-400 italic">"{clubData.slogan}"</p>
+                    <p className="text-gray-400 italic">{clubData.slogan}</p>
                   )}
                 </motion.div>
               )}

@@ -1,12 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import {
-  FaTwitter,
-  FaDiscord,
-  FaTelegram,
-  FaTrophy,
-  FaGithub,
-} from "react-icons/fa";
+import { FaTwitter, FaDiscord, FaTelegram, FaTrophy } from "react-icons/fa";
 import Link from "next/link";
 
 const Footer = () => {
@@ -47,8 +41,8 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="space-y-4">
             <Link href="/">
-              <motion.div 
-                whileHover={{ scale: 1.05 }} 
+              <motion.div
+                whileHover={{ scale: 1.05 }}
                 className="inline-flex items-center gap-2"
               >
                 <div className="w-10 h-10 bg-[#fca311]/10 rounded-lg flex items-center justify-center">
@@ -60,8 +54,8 @@ const Footer = () => {
               </motion.div>
             </Link>
             <p className="text-[#e5e5e5]/70">
-              Step into the technical area. Draft your dream squad and prove your 
-              managerial expertise.
+              Step into the technical area. Draft your dream squad and prove
+              your managerial expertise.
             </p>
 
             {/* Social Links */}
