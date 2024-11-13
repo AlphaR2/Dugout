@@ -1,15 +1,27 @@
 "use client";
-import { motion, useScroll } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
-  FaTrophy,
+  FaHome,
+  FaUsers,
   FaFutbol,
-  FaChartLine,
+  FaTrophy,
+  FaInbox,
+  FaCog,
   FaBars,
   FaTimes,
   FaWallet,
 } from "react-icons/fa";
+
+const navItems = [
+  { icon: FaHome, label: "Overview", href: "/dashboard" },
+  { icon: FaUsers, label: "Squad", href: "/dashboard/squad" },
+  { icon: FaFutbol, label: "Matches", href: "/dashboard/matches" },
+  { icon: FaTrophy, label: "Competitions", href: "/dashboard/competitions" },
+  { icon: FaInbox, label: "Inbox", href: "/dashboard/inbox" },
+  { icon: FaCog, label: "Settings", href: "/dashboard/settings" },
+];
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -28,14 +40,14 @@ const Navigation = () => {
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="fixed top-0 self-center  -translate-x-1/2 z-50 w-full max-w-4xl px-4"
+        className="fixed top-0 self-center -translate-x-1/2 z-50 w-full max-w-4xl px-4"
       >
         <nav
           className={`
             relative rounded-bl-2xl rounded-br-2xl p-2 transition-all duration-300
             ${
               isScrolled
-                ? "bg-[#00050c]/80 backdrop-blur-xl  border-[#fca311]/10"
+                ? "bg-[#00050c]/80 backdrop-blur-xl border-[#fca311]/10"
                 : "bg-[#000a16] backdrop-blur-sm"
             }
           `}
@@ -43,13 +55,13 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center justify-between h-16 px-6">
             {/* Logo - Left */}
-            <Link href="/">
+            <Link href="/dashboard">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 className="flex items-center gap-2"
               >
                 <div className="w-8 h-8 bg-[#fca311]/10 rounded-lg flex items-center justify-center">
-                  <FaTrophy className="text-white w-4 h-4" />
+                  <FaHome className="text-white w-4 h-4" />
                 </div>
                 <span className="text-xl font-semibold text-white">Dugout</span>
               </motion.div>
@@ -58,18 +70,7 @@ const Navigation = () => {
             {/* Center Navigation */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="flex items-center gap-1 rounded-xl p-1">
-                {[
-                  {
-                    label: "Matches",
-                    icon: FaFutbol,
-                    href: "/general/matches",
-                  },
-                  {
-                    label: "Leaders",
-                    icon: FaChartLine,
-                    href: "/general/leaderboard",
-                  },
-                ].map((item, index) => (
+                {navItems.slice(1, 5).map((item, index) => (
                   <Link key={index} href={item.href}>
                     <motion.div
                       whileHover={{ scale: 1.05 }}
@@ -87,20 +88,22 @@ const Navigation = () => {
               </div>
             </div>
 
-            {/* Connect Wallet - Right */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 px-4 py-2 bg-[#fca311] rounded-xl font-medium text-black text-sm"
-            >
-              <FaWallet className="w-4 h-4" />
-              <span>Connect</span>
-            </motion.button>
+            {/* Settings - Right */}
+            <Link href="/dashboard/settings">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2 px-4 py-2 bg-[#fca311] rounded-xl font-medium text-black text-sm"
+              >
+                <FaCog className="w-4 h-4" />
+                <span>Settings</span>
+              </motion.div>
+            </Link>
           </div>
 
           {/* Mobile Navigation */}
           <div className="md:hidden flex items-center justify-between h-14 px-4">
-            <Link href="/">
+            <Link href="/dashboard">
               <span className="text-xl font-bold text-[#fca311]">Dugout</span>
             </Link>
 
@@ -126,11 +129,7 @@ const Navigation = () => {
         className="fixed inset-y-0 right-0 z-40 w-full md:hidden bg-black/95 backdrop-blur-xl"
       >
         <div className="flex flex-col h-full pt-20 p-6">
-          {[
-            { label: "Active Groups", icon: FaTrophy, href: "/groups" },
-            { label: "Live Matches", icon: FaFutbol, href: "/matches" },
-            { label: "Leaderboard", icon: FaChartLine, href: "/leaderboard" },
-          ].map((item, index) => (
+          {navItems.map((item, index) => (
             <Link
               key={index}
               href={item.href}
@@ -145,16 +144,6 @@ const Navigation = () => {
               </motion.div>
             </Link>
           ))}
-
-          <div className="mt-auto border-t border-[#fca311]/10 pt-4">
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              className="w-full flex items-center justify-center gap-2 p-4 bg-[#fca311] rounded-xl font-medium text-black"
-            >
-              <FaWallet className="w-5 h-5" />
-              <span>Connect Wallet</span>
-            </motion.button>
-          </div>
         </div>
       </motion.div>
     </>

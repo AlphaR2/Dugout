@@ -124,6 +124,7 @@ export const useMatches = (
         `/api/competitions/${competitionCode.toLowerCase()}`
       );
 
+      console.log(response);
       const {
         processed,
         currentMatchday: current,
