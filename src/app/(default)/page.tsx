@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 import { FaPlayCircle } from "react-icons/fa";
 import { GiSoccerBall, GiSoccerField, GiWhistle } from "react-icons/gi";
 import { BsPersonFill } from "react-icons/bs";
-import ActiveGroups from "@/components/Active";
 import LiveMatches from "@/components/live";
-import HowItWorks from "@/components/Workings";
+import ActiveGroups from "@/components/active";
+import HowItWorks from "@/components/working";
 
 export default function Home() {
   return (
