@@ -66,7 +66,7 @@ export default function Home() {
                       transition={{ delay: 0.2 }}
                     >
                       Draft your perfect XI, make the crucial calls, and prove
-                      your tactical genius in Europe's most elite competitions.
+                      your tactical genius in Europe most elite competitions.
                     </motion.p>
                   </div>
 

@@ -16,3 +16,14 @@ export const GROUP_STATUS = {
   upcoming: "Upcoming",
   completed: "Completed",
 } as const;
+
+export interface GroupFormData {
+  name: string;
+  type: typeof GROUP_TYPES;
+  description: string;
+  maxParticipants: number;
+  startDate: string;
+  endDate: string;
+  entryFee: number;
+  rules: string;
+}

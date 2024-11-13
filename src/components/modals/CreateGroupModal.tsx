@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
-import { GROUP_TYPES } from "../../../utils/constants";
+import { GROUP_TYPES, GroupFormData } from "../../../utils/constants";
 
 interface CreateGroupModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: any) => void;
+  onSubmit: (data: GroupFormData) => void;
 }
 
 export const CreateGroupModal = ({
@@ -16,9 +16,9 @@ export const CreateGroupModal = ({
   onClose,
   onSubmit,
 }: CreateGroupModalProps) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<GroupFormData>({
     name: "",
-    type: "league" as keyof typeof GROUP_TYPES,
+    type: GROUP_TYPES,
     description: "",
     maxParticipants: 20,
     startDate: "",
@@ -78,12 +78,12 @@ export const CreateGroupModal = ({
 
               <div>
                 <label className="text-sm text-gray-400 mb-2 block">Type</label>
-                <select
+                {/* <select
                   value={formData.type}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      type: e.target.value as keyof typeof GROUP_TYPES,
+                      type: GROUP_TYPES,
                     })
                   }
                   className="w-full bg-[#000a16] border border-white/10 rounded-lg p-2 text-white"
@@ -94,7 +94,7 @@ export const CreateGroupModal = ({
                       {value}
                     </option>
                   ))}
-                </select>
+                </select> */}
               </div>
 
               <div>
@@ -273,10 +273,7 @@ export const JoinGroupModal = ({
                           {GROUP_TYPES[group.type as keyof typeof GROUP_TYPES]}
                         </p>
                       </div>
-                      <button
-                       
-                        className="bg-[#fca311] hover:bg-[#fca311]/90 text-black"
-                      >
+                      <button className="bg-[#fca311] hover:bg-[#fca311]/90 text-black">
                         Join
                       </button>
                     </div>

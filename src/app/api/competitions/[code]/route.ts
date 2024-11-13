@@ -36,7 +36,7 @@ export async function GET(
     console.log(data);
 
     return NextResponse.json(data);
-  } catch (error: any) {
+  } catch (error) {
     console.error("API Error:", error);
     return NextResponse.json(
       { message: "Failed to fetch matches data" },
