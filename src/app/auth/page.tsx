@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { GoogleLogin } from "@react-oauth/google";
+import GoogleLoginButton from "@/components/button";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store/store";
 import { setIsAuth } from "../../../store/slices/isAuthSlice";
@@ -243,7 +243,7 @@ export default function AuthPage() {
               <p className="text-sm text-gray-400 text-center max-w-sm">
                 By continuing, you agree to Dugout's
                 <Link
-                  href='/terms'
+                  href="/terms"
                   className="text-[#fca311] hover:text-[#fca311]/80 transition-colors"
                 >
                   Terms of Service
@@ -299,46 +299,3 @@ export default function AuthPage() {
     </motion.div>
   );
 }
-
-export const GoogleLoginButton = ({
-  isLoading,
-  onSuccess,
-}: {
-  isLoading: boolean;
-  onSuccess: (response: GoogleCredentialResponse) => void;
-}) => {
-  return (
-    <motion.div
-      whileHover={{ scale: isLoading ? 1 : 1.02 }}
-      whileTap={{ scale: isLoading ? 1 : 0.98 }}
-      className="relative w-full"
-    >
-      {/* Semi-transparent overlay during loading */}
-      {isLoading && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="absolute inset-0 bg-black/30 rounded-full z-10 flex items-center justify-center backdrop-blur-sm"
-        >
-          <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
-        </motion.div>
-      )}
-
-      <div className={isLoading ? "pointer-events-none" : ""}>
-        <GoogleLogin
-          onSuccess={onSuccess}
-          onError={() => {
-            console.error("Login Failed");
-          }}
-          type="standard"
-          theme="outline"
-          text="continue_with"
-          shape="pill"
-          logo_alignment="center"
-          size="large"
-          width="600"
-        />
-      </div>
-    </motion.div>
-  );
-};
