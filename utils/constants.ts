@@ -27,3 +27,4 @@ export interface GroupFormData {
   entryFee: number;
   rules: string;
 }
+

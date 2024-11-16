@@ -1,20 +1,24 @@
 "use client";
 import { useState, useEffect } from "react";
+import {
+  getDataFromLocalStorage,
+  saveDataToLocalStorage,
+} from "../utils/localStorage";
 
 export const useOnboarding = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(true);
 
   useEffect(() => {
-    const onboardingComplete = localStorage.getItem("onboardingComplete");
-    if (!onboardingComplete) {
+    const onboardModal = getDataFromLocalStorage("onboard");
+    if (onboardModal === "false") {
       setShowOnboarding(true);
       setHasSeenOnboarding(false);
     }
   }, []);
 
   const handleOnboardingComplete = () => {
-    localStorage.setItem("onboardingComplete", "true");
+       saveDataToLocalStorage("onboard", "true");
     setShowOnboarding(false);
     setHasSeenOnboarding(true);
   };

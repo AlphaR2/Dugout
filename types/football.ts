@@ -115,4 +115,38 @@ export interface MatchesData {
   competition: Competition;
 }
 
+export interface NotificationState {
+  message: string;
+  status: "success" | "error";
+  show: boolean;
+}
 
+export interface ClubData {
+  clubName: string;
+  coachName: string; // username
+  clubSlugName: string;
+  abbreviation: string;
+  slogan: string;
+  primaryColor: string;
+  favClub: string[];
+}
+
+export interface ValidationErrors {
+  clubName?: string;
+  coachName?: string;
+  abbreviation?: string;
+  favClub?: string;
+}
+
+export interface OnboardResponse {
+  status: string;
+  message: string;
+  data: {
+    user: {
+      id: string;
+      clubName: string;
+      clubAbbrev: string;
+      clubColor: string;
+    };
+  };
+}

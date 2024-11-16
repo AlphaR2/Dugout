@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Navigation from "@/components/nav";
-import Footer from "@/components/footer";
-// import Navigation from "@/components/nav";
-// import Footer from "@/components/footer";
 import { StoreProvider } from "../../store/provider";
+import Providers from "@/components/Provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,18 +27,17 @@ export default function RootLayout({
 }>) {
   return (
     <StoreProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased tracking-tight`}
-        >
-          <div className="flex flex-col justify-between min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
-            <Navigation />
-            {children}
-
-            <Footer />
-          </div>
-        </body>
-      </html>
+      <Providers>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased tracking-tight`}
+          >
+            <div className="flex flex-col justify-between min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
+              {children}
+            </div>
+          </body>
+        </html>
+      </Providers>
     </StoreProvider>
   );
 }

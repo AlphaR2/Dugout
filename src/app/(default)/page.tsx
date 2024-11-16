@@ -5,6 +5,7 @@ import { GiSoccerBall, GiWhistle } from "react-icons/gi";
 import { BsPersonFill } from "react-icons/bs";
 import LiveMatches from "@/components/live";
 import ActiveGroups from "@/components/active";
+import Link from "next/link";
 import HowItWorks from "@/components/working";
 
 export default function Home() {
@@ -77,15 +78,18 @@ export default function Home() {
                     transition={{ delay: 0.9 }}
                     className="flex gap-4"
                   >
+                    <Link href="/auth">
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="px-8 py-4 bg-[#fca311] text-black rounded-xl font-bold flex items-center gap-2"
+                      >
+                        <GiWhistle className="text-xl" />
+                        Start Managing
+                      </motion.button>
+                    </Link>
                     <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="px-8 py-4 bg-[#fca311] text-black rounded-xl font-bold flex items-center gap-2"
-                    >
-                      <GiWhistle className="text-xl" />
-                      Start Managing
-                    </motion.button>
-                    <motion.button
+                      disabled
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       className="px-8 py-4 bg-[#14213d] text-white rounded-xl font-bold flex items-center gap-2 hover:bg-[#14213d]/80"

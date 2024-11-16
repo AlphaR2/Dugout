@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
@@ -12,6 +13,8 @@ import {
 } from "react-icons/fa";
 
 const Navigation = () => {
+  const router = useRouter;
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -62,12 +65,12 @@ const Navigation = () => {
                   {
                     label: "Matches",
                     icon: FaFutbol,
-                    href: "/general/matches",
+                    href: "/",
                   },
                   {
                     label: "Leaders",
                     icon: FaChartLine,
-                    href: "/general/leaderboard",
+                    href: "/",
                   },
                 ].map((item, index) => (
                   <Link key={index} href={item.href}>
@@ -87,14 +90,15 @@ const Navigation = () => {
               </div>
             </div>
 
-            {/* Connect Wallet - Right */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="flex items-center gap-2 px-4 py-2 bg-[#fca311] rounded-xl font-medium text-black text-sm"
+
+              // onClick={router.}
             >
-              <FaWallet className="w-4 h-4" />
-              <span>Connect</span>
+              {/* <FaWallet className="w-4 h-4" /> */}
+              <Link href="/auth">Get Started</Link>
             </motion.button>
           </div>
 
@@ -151,8 +155,7 @@ const Navigation = () => {
               whileTap={{ scale: 0.95 }}
               className="w-full flex items-center justify-center gap-2 p-4 bg-[#fca311] rounded-xl font-medium text-black"
             >
-              <FaWallet className="w-5 h-5" />
-              <span>Connect Wallet</span>
+              <span>Get Started</span>
             </motion.button>
           </div>
         </div>

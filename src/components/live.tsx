@@ -17,7 +17,10 @@ const LiveMatches = () => {
 
   const { live, upcoming } = matchesData;
 
-  console.log(live);
+  console.log("Live:", live);
+  console.log("matchdata:", matchesData);
+
+  console.log("Upcoming:", upcoming);
 
   return (
     <div className="py-16 bg-[#000610]/50">
@@ -149,6 +152,8 @@ const LiveMatches = () => {
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-white/5 rounded-lg p-2 group-hover:bg-white/10 transition-colors">
                         <Image
+                          width={50}
+                          height={50}
                           src={match.homeTeam.crest}
                           alt={match.homeTeam.name}
                           className="w-full h-full object-contain"
@@ -179,6 +184,8 @@ const LiveMatches = () => {
                       </span>
                       <div className="w-10 h-10 bg-white/5 rounded-lg p-2 group-hover:bg-white/10 transition-colors">
                         <Image
+                          width={50}
+                          height={50}
                           src={match.awayTeam.crest}
                           alt={match.awayTeam.name}
                           className="w-full h-full object-contain"

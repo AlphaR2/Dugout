@@ -12,6 +12,14 @@ import {
   FaBars,
   FaTimes,
 } from "react-icons/fa";
+import { SettingsModal } from "../modals/SettingsModal";
+import { useRouter } from "next/navigation";
+
+import { logOut } from "../../../store/slices/isAuthSlice";
+import { AppDispatch } from "../../../store/store";
+import { useDispatch } from "react-redux";
+
+import { googleLogout } from "@react-oauth/google";
 
 const navItems = [
   { icon: FaHome, label: "Overview", href: "/dashboard" },
@@ -23,8 +31,11 @@ const navItems = [
 ];
 
 const Navigation = () => {
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const updateScroll = () => {
@@ -34,12 +45,34 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", updateScroll);
   }, []);
 
+  const handleLogout = async () => {
+    // Add logout logic here
+    try {
+      googleLogout();
+      // Clear auth state in Redux
+      dispatch(logOut());
+
+      console.log("Logging out...");
+      setIsSettingsOpen(false);
+
+      router.push("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+  const handleConnectWallet = () => {
+    // Add wallet connection logic here
+    console.log("Connecting wallet...");
+    setIsSettingsOpen(false);
+  };
+
   return (
     <>
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="fixed top-0 self-center -translate-x-1/2 z-50 w-full max-w-4xl px-4"
+        className="fixed top-0 self-center -translate-x-1/2 z-40 w-full max-w-4xl px-4"
       >
         <nav
           className={`
@@ -60,7 +93,7 @@ const Navigation = () => {
                 className="flex items-center gap-2"
               >
                 <div className="w-8 h-8 bg-[#fca311]/10 rounded-lg flex items-center justify-center">
-                  <FaHome className="text-white w-4 h-4" />
+                  <FaTrophy className="text-white w-4 h-4" />
                 </div>
                 <span className="text-xl font-semibold text-white">Dugout</span>
               </motion.div>
@@ -87,17 +120,16 @@ const Navigation = () => {
               </div>
             </div>
 
-            {/* Settings - Right */}
-            <Link href="/dashboard/settings">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 px-4 py-2 bg-[#fca311] rounded-xl font-medium text-black text-sm"
-              >
-                <FaCog className="w-4 h-4" />
-                <span>Settings</span>
-              </motion.div>
-            </Link>
+            {/* Settings Button - Right */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsSettingsOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-[#fca311] rounded-xl font-medium text-black text-sm"
+            >
+              <FaCog className="w-4 h-4" />
+              <span>Settings</span>
+            </motion.button>
           </div>
 
           {/* Mobile Navigation */}
@@ -106,17 +138,27 @@ const Navigation = () => {
               <span className="text-xl font-bold text-[#fca311]">Dugout</span>
             </Link>
 
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#14213d]"
-            >
-              {isMobileMenuOpen ? (
-                <FaTimes className="w-4 h-4 text-white" />
-              ) : (
-                <FaBars className="w-4 h-4 text-white" />
-              )}
-            </motion.button>
+            <div className="flex items-center gap-2">
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsSettingsOpen(true)}
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#fca311]"
+              >
+                <FaCog className="w-4 h-4 text-black" />
+              </motion.button>
+
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#14213d]"
+              >
+                {isMobileMenuOpen ? (
+                  <FaTimes className="w-4 h-4 text-white" />
+                ) : (
+                  <FaBars className="w-4 h-4 text-white" />
+                )}
+              </motion.button>
+            </div>
           </div>
         </nav>
       </motion.header>
@@ -145,6 +187,14 @@ const Navigation = () => {
           ))}
         </div>
       </motion.div>
+
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        onLogout={handleLogout}
+        onConnectWallet={handleConnectWallet}
+      />
     </>
   );
 };
