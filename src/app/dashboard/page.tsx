@@ -2,15 +2,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import {
-  FaTrophy,
-  FaFutbol,
-  FaPlus,
-  FaStar,
-  FaChevronRight,
-  FaCog,
-  FaUsers,
-} from "react-icons/fa";
+import { FaTrophy, FaPlus, FaStar, FaChevronRight } from "react-icons/fa";
 import OnboardingModal from "@/components/modals/Onboarding";
 import InfoButton from "@/components/ui/Infobutton";
 import TeamFormation from "@/components/team/TeamFormation";
@@ -172,8 +164,7 @@ export default function DashboardPage() {
                   <p className="text-gray-400 italic text-sm sm:text-base mt-2">
                     Create your legacy
                   </p>
-                )}
-              </motion.div>
+                )}</motion.div>
             </div>
 
             {/* Optional: Add a quick stats or actions section */}

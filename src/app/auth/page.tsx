@@ -23,9 +23,7 @@ interface User {
   email: string;
   name: string;
   role: string;
-  businesses: any[];
   createdAt: string;
-  phoneNumber: string | null;
   updatedAt: string;
 }
 
@@ -36,6 +34,12 @@ interface LoginResponse {
     accessToken: string;
     user: User;
   };
+}
+
+interface GoogleCredentialResponse {
+  credential?: string;
+  clientId?: string;
+  select_by?: string;
 }
 
 // Animation variants
@@ -96,7 +100,7 @@ export default function AuthPage() {
   }, [isAuthenticated, router]);
 
   // Google login handler
-  const handleGoogleLogin = async (credential: any) => {
+  const handleGoogleLogin = async (credential: GoogleCredentialResponse) => {
     if (!credential?.credential) {
       showNotification("Invalid credentials provided", "error");
       return;
@@ -301,7 +305,7 @@ export const GoogleLoginButton = ({
   onSuccess,
 }: {
   isLoading: boolean;
-  onSuccess: (response: any) => void;
+  onSuccess: (response: GoogleCredentialResponse) => void;
 }) => {
   return (
     <motion.div

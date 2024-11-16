@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
@@ -9,11 +9,11 @@ import {
   FaChartLine,
   FaBars,
   FaTimes,
-  FaWallet,
+  // FaWallet,
 } from "react-icons/fa";
 
 const Navigation = () => {
-  const router = useRouter;
+  // const router = useRouter;
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
