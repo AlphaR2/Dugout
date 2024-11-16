@@ -368,7 +368,7 @@ const OnboardingModal = ({ isOpen, onClose }: OnboardingModalProps) => {
           >
             <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent" />
             <p className="text-gray-400 italic text-sm bg-[#14213d] px-4 inline-block relative">
-              '{clubData.slogan}'
+              {clubData.slogan}
             </p>
           </motion.div>
         )}
@@ -383,7 +383,7 @@ const OnboardingModal = ({ isOpen, onClose }: OnboardingModalProps) => {
           >
             <p className="text-sm text-gray-500 mb-2">Inspired by</p>
             <div className="flex flex-wrap justify-center gap-2">
-            {clubData.favClub.map((club, index) => (
+            {clubData.favClub.map((club) => (
                 <span
                   key={club}
                   className="text-xs px-3 py-1 rounded-full bg-[#000a16]"

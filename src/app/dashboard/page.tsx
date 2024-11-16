@@ -157,7 +157,7 @@ export default function DashboardPage() {
                   <div className="relative mt-3">
                     <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent" />
                     <p className="text-gray-400 italic text-sm sm:text-base bg-[#14213d]/60 pr-4 inline-block relative">
-                      "{clubData.slogan}"
+                      '{clubData.slogan}'
                     </p>
                   </div>
                 ) : (

@@ -1,9 +1,14 @@
 // components/ui/Notification.tsx
 "use client";
 import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaCheckCircle, FaTimesCircle, FaTimes, FaInfoCircle } from "react-icons/fa";
+import {
+  FaCheckCircle,
+  FaTimesCircle,
+  FaTimes,
+  FaInfoCircle,
+} from "react-icons/fa";
 
 interface NotificationProps {
   message: string;
@@ -16,7 +21,7 @@ const Notification: React.FC<NotificationProps> = ({
   status,
   switchShowOff,
 }) => {
-  const router = useRouter();
+  // const router = useRouter();
 
   // Configure status-based styles
   const statusConfig = {
@@ -77,8 +82,8 @@ const Notification: React.FC<NotificationProps> = ({
           <div className="relative flex items-center w-full gap-3">
             {/* Icon */}
             <div className="flex-shrink-0">
-              <currentStatus.icon 
-                className={`${currentStatus.iconColor} text-xl`} 
+              <currentStatus.icon
+                className={`${currentStatus.iconColor} text-xl`}
               />
             </div>
 
@@ -115,14 +120,14 @@ const Notification: React.FC<NotificationProps> = ({
 export default Notification;
 
 // Usage example:
-import { useState } from 'react';
+import { useState } from "react";
 
 export const ShowNotification = () => {
   const [show, setShow] = useState(false);
 
   return (
     <div>
-      <button 
+      <button
         onClick={() => setShow(true)}
         className="bg-[#fca311] text-black px-4 py-2 rounded-xl"
       >

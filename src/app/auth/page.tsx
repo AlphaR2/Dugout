@@ -241,14 +241,14 @@ export default function AuthPage() {
               />
 
               <p className="text-sm text-gray-400 text-center max-w-sm">
-                By continuing, you agree to Dugout's{" "}
+                By continuing, you agree to Dugout's
                 <Link
-                  href="/terms"
+                  href='/terms'
                   className="text-[#fca311] hover:text-[#fca311]/80 transition-colors"
                 >
                   Terms of Service
-                </Link>{" "}
-                and{" "}
+                </Link>
+                and
                 <Link
                   href="/privacy"
                   className="text-[#fca311] hover:text-[#fca311]/80 transition-colors"
