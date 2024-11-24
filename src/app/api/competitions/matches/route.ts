@@ -50,15 +50,15 @@ export async function GET() {
 
     const data = await response.json();
 
-    // Log the matches count by competition
-    const matchesByCompetition = data.matches?.reduce(
-      (acc: any, match: any) => {
-        const competition = match.competition.name;
-        acc[competition] = (acc[competition] || 0) + 1;
-        return acc;
-      },
-      {}
-    );
+    // // Log the matches count by competition
+    // const matchesByCompetition = data.matches?.reduce(
+    //   (acc: any, match: any) => {
+    //     const competition = match.competition.name;
+    //     acc[competition] = (acc[competition] || 0) + 1;
+    //     return acc;
+    //   },
+    //   {}
+    // );
 
     // console.log("✅ Successfully fetched matches:", {
     //   totalMatches: data.matches?.length || 0,
