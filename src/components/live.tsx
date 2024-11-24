@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { FaBolt, FaCalendar } from "react-icons/fa";
 import { useMatches } from "../../utils/plData";
+import { useLiveMatches } from "../../utils/matches";
 import Image from "next/image";
 
 type LeagueCode = "PL" | "PD"; // Premier League or Primera División
@@ -11,16 +12,16 @@ type TabType = "live" | "upcoming";
 const LiveMatches = () => {
   const [activeTab, setActiveTab] = useState<TabType>("live");
   const [activeLeague, setActiveLeague] = useState<LeagueCode>("PL");
+  const { matches } = useLiveMatches(activeLeague);
 
   const { matchesData, nextMatchday, error, isLoading } =
     useMatches(activeLeague);
 
-  const { live, upcoming } = matchesData;
+  const { upcoming } = matchesData;
 
-  console.log("Live:", live);
-  console.log("matchdata:", matchesData);
+  // console.log("matchdata:", matchesData);
 
-  console.log("Upcoming:", upcoming);
+  // console.log("Upcoming:", upcoming);
 
   return (
     <div className="py-16 bg-[#000610]/50">
@@ -114,7 +115,7 @@ const LiveMatches = () => {
         )}
 
         <div className="space-y-4">
-          {(activeTab === "live" ? live : upcoming).map(
+          {(activeTab === "live" ? matches : upcoming).map(
             (match, index: number) => (
               <motion.div
                 key={match.id}
@@ -198,7 +199,7 @@ const LiveMatches = () => {
             )
           )}
 
-          {(activeTab === "live" ? live : upcoming).length === 0 && (
+          {(activeTab === "live" ? matches : upcoming).length === 0 && (
             <div className="text-center py-32 text-white/50">
               No {activeTab} matches at the moment
             </div>

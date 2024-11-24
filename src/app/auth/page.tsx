@@ -114,6 +114,7 @@ export default function AuthPage() {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       setAuthStep("server-auth");
+
       const response = await fetch(`${baseURL}/auth/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -121,9 +122,9 @@ export default function AuthPage() {
       });
 
       const data: LoginResponse = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Authentication failed");
+      // No need to call .json() as apiClient handles it
+      if (!response || !data) {
+        throw new Error("Invalid response from server");
       }
 
       showNotification("Successfully signed in!", "success");
@@ -155,6 +156,17 @@ export default function AuthPage() {
       setAuthStep("idle");
     }
   };
+
+  //     console.error("Authentication error:", error);
+  //     showNotification(
+  //       error instanceof Error ? error.message : "An unexpected error occurred",
+  //       "error"
+  //     );
+  //   } finally {
+  //     setIsLoading(false);
+  //     setAuthStep("idle");
+  //   }
+  // };
 
   // const getLoadingMessage = () => {
   //   switch (authStep) {

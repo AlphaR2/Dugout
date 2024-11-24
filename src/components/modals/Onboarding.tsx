@@ -101,7 +101,7 @@ const OnboardingModal = ({ isOpen, onClose }: OnboardingModalProps) => {
       });
 
       if (response?.data) {
-        console.log(response.data);
+        // console.log(response.data);
 
         const ddd = response.data;
 
