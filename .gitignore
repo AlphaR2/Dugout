@@ -43,4 +43,3 @@ next-env.d.ts
 # prod files I want to add to gitignore but I will remove later  
 dashboard/
 auth/
-idl/
