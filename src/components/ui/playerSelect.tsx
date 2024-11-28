@@ -2,7 +2,6 @@ import { Player, FORMATION_442, Position } from "../../../types/football";
 import { usePlayers } from "../../../utils/teams";
 import { useState } from "react";
 
-
 export const FormationView: React.FC<{
   selectedPlayers: Player[];
   onRemovePlayer?: (playerId: number) => void;
@@ -61,7 +60,7 @@ export const PlayersList: React.FC<{
   selectedPlayers: Player[];
   onSelectPlayer: (player: Player) => void;
 }> = ({ selectedPlayers, onSelectPlayer }) => {
-  const { players, isLoading } = usePlayers("PL");
+  const { players } = usePlayers("PL");
   const [search, setSearch] = useState("");
   const [positionFilter, setPositionFilter] = useState<string | null>(null);
 
@@ -103,7 +102,7 @@ export const PlayersList: React.FC<{
           Position.ST,
 
           // Position
-        ].map((pos: any) => (
+        ].map((pos) => (
           <button
             key={pos}
             onClick={() =>

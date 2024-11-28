@@ -1,4 +1,3 @@
-
 "use client";
 import { useState, useCallback } from "react";
 
@@ -23,9 +22,9 @@ export const useModal = (initialState: boolean = false): UseModalReturn => {
   const onSubmit = useCallback(() => {
     // This is a placeholder for submit logic
     // Will be implemented by the component using the hook
-    console.log('Modal submitted');
+    console.log("Modal submitted");
     onClose();
-  }, []);
+  }, [onclose]);
 
   return {
     isOpen,

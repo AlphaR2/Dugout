@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-// import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
@@ -11,7 +10,6 @@ import {
   FaTimes,
   // FaWallet,
 } from "react-icons/fa";
-import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 const Navigation = () => {

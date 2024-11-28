@@ -6,10 +6,10 @@ import {
   WalletProvider,
 } from "@solana/wallet-adapter-react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-require("@solana/wallet-adapter-react-ui/styles.css");
+import "@solana/wallet-adapter-react-ui/styles.css";
 
 const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const endpoint: any = process.env.NEXT_PUBLIC_RPC;
+  const endpoint: string = process.env.NEXT_PUBLIC_RPC!;
 
   // const endpoint = web3.clusterApiUrl("mainnet-beta");
   const wallets = useMemo(() => [], []);

@@ -1,36 +1,22 @@
 "use client";
 
 import { PublicKey, SystemProgram } from "@solana/web3.js";
-import { Program, AnchorProvider, setProvider, BN } from "@coral-xyz/anchor";
+import {
+  Program,
+  AnchorProvider,
+  setProvider,
+  BN,
+} from "@coral-xyz/anchor";
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 import idl from "../../../utils/idl/idl.json";
 import { Dugout } from "../../../utils/config/program";
 
-interface UserJoinedEvent {
-  groupId: string;
-  user: PublicKey;
-  entryAmount: BN;
-  memberCount: number;
-  isGroupFull: boolean;
-  timestamp: BN;
-}
-
-interface GroupCreatedEvent {
-  groupId: string;
-  creator: PublicKey;
-  entryFee: BN;
-  matchWeek: number;
-  vault: PublicKey;
-  timestamp: BN;
-}
-
 export const useGroupProgram = () => {
   const wallet = useAnchorWallet();
   const { connection } = useConnection();
-  const [program, setProgram] = useState<any>();
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [program, setProgram] = useState<Program<Dugout> | null>(null);
 
   const PROGRAM_ID = new PublicKey(idl.address);
 
@@ -92,7 +78,7 @@ export const useGroupProgram = () => {
 
       const tx = await program.methods
         .createGroup(groupId, new BN(entryFee), matchWeek)
-        .accounts({
+        .accountsPartial({
           creator: wallet.publicKey,
           leagueGroupState,
           vault,
@@ -100,17 +86,22 @@ export const useGroupProgram = () => {
           systemProgram: SystemProgram.programId,
         })
         .rpc();
+      const latestBlockhash = await connection.getLatestBlockhash();
+      const confirmation = await connection.confirmTransaction({
+        signature: tx,
+        blockhash: latestBlockhash.blockhash,
+        lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+      });
 
-      const confirmation = await connection.confirmTransaction(tx, "confirmed");
       if (confirmation.value.err) {
         throw new Error("Transaction failed");
       }
 
-      toast.success("Group created successfully!");
+      toast.success(tx && "Group created successfully!");
       return tx;
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error creating group:", error);
-      toast.error(error.message || "Failed to create group");
+      toast.error("Failed to create group");
       throw error;
     }
   };
@@ -131,7 +122,7 @@ export const useGroupProgram = () => {
 
       const tx = await program.methods
         .joinGroup(groupId, new BN(entryFee))
-        .accounts({
+        .accountsPartial({
           user: wallet.publicKey,
           userState,
           leagueGroupState,
@@ -141,16 +132,22 @@ export const useGroupProgram = () => {
         })
         .rpc();
 
-      const confirmation = await connection.confirmTransaction(tx, "confirmed");
+      const latestBlockhash = await connection.getLatestBlockhash();
+      const confirmation = await connection.confirmTransaction({
+        signature: tx,
+        blockhash: latestBlockhash.blockhash,
+        lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+      });
+
       if (confirmation.value.err) {
         throw new Error("Transaction failed");
       }
 
-      toast.success("Successfully joined group!");
+      toast.success(tx && "Group created successfully!");
       return tx;
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error joining group:", error);
-      toast.error(error.message || "Failed to join group");
+      toast.error("Failed to join group");
       throw error;
     }
   };
@@ -172,7 +169,7 @@ export const useGroupProgram = () => {
 
       const tx = await program.methods
         .claim(groupId, new BN(points), position)
-        .accounts({
+        .accountsPartial({
           user: wallet.publicKey,
           userState,
           leagueGroupState,
@@ -182,16 +179,22 @@ export const useGroupProgram = () => {
         })
         .rpc();
 
-      const confirmation = await connection.confirmTransaction(tx, "confirmed");
+      const latestBlockhash = await connection.getLatestBlockhash();
+      const confirmation = await connection.confirmTransaction({
+        signature: tx,
+        blockhash: latestBlockhash.blockhash,
+        lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+      });
+
       if (confirmation.value.err) {
         throw new Error("Transaction failed");
       }
 
-      toast.success("Successfully claimed rewards!");
+      toast.success("Group created successfully!");
       return tx;
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error claiming rewards:", error);
-      toast.error(error.message || "Failed to claim rewards");
+      toast.error("Failed to claim rewards");
       throw error;
     }
   };
@@ -201,6 +204,5 @@ export const useGroupProgram = () => {
     createGroup,
     joinGroup,
     claim,
-    isInitialized,
   };
 };

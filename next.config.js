@@ -11,6 +11,9 @@ const config = {
       },
     ],
   },
+  transpilePackages: [
+    "@solana/wallet-adapter-react-ui",
+  ],
 };
 
 module.exports = config;

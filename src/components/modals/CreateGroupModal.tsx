@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import * as web3 from "@solana/web3.js";
 import { generateGroupId } from "../../../utils/test/generate";
@@ -44,9 +44,9 @@ export const CreateGroupModal = ({
         "Group created successfully! Transaction: " + tx.substring(0, 8) + "..."
       );
       onClose();
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error:", error);
-      toast.error(error.message || "Failed to create group");
+      toast.error("Failed to create group");
     } finally {
       setIsLoading(false);
     }
@@ -226,9 +226,9 @@ export const JoinGroupModal = ({
         "Successfully joined group! Transaction: " + tx.substring(0, 8) + "..."
       );
       onClose();
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error joining group:", error);
-      setError(error.message || "Failed to join group");
+      setError("Failed to join group");
     } finally {
       setIsLoading(false);
     }
