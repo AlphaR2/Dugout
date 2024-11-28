@@ -11,6 +11,8 @@ import {
   FaTimes,
   // FaWallet,
 } from "react-icons/fa";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 const Navigation = () => {
   // const router = useRouter;
@@ -93,12 +95,16 @@ const Navigation = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 px-4 py-2 bg-[#fca311] rounded-xl font-medium text-black text-sm"
-
-              // onClick={router.}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium  text-sm"
             >
-              {/* <FaWallet className="w-4 h-4" /> */}
-              <Link href="/auth">Get Started</Link>
+              <WalletMultiButton
+                className="flex rounded-3xl"
+                style={{
+                  backgroundColor: "#fca311",
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+              />
             </motion.button>
           </div>
 

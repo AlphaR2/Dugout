@@ -9,7 +9,6 @@ const formatDate = (date: Date): string => {
 };
 
 export async function GET() {
-
   try {
     // Get today's date
     const today = new Date();

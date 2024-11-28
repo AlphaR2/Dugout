@@ -19,10 +19,6 @@ const LiveMatches = () => {
 
   const { upcoming } = matchesData;
 
-  // console.log("matchdata:", matchesData);
-
-  // console.log("Upcoming:", upcoming);
-
   return (
     <div className="py-16 bg-[#000610]/50">
       {/* Header */}
@@ -56,7 +52,7 @@ const LiveMatches = () => {
         {/* Match Type Tabs */}
         <div className="inline-flex bg-[#14213d]/50 backdrop-blur-sm p-1 rounded-xl">
           {[
-            { id: "live" as const, label: "Live Matches", icon: FaBolt },
+            { id: "live" as const, label: "Matches Today", icon: FaBolt },
             { id: "upcoming" as const, label: "Upcoming", icon: FaCalendar },
           ].map((tab) => (
             <motion.button

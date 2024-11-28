@@ -1,10 +1,3 @@
-export const POSITIONS = {
-  GK: "Goalkeeper",
-  DEF: "Defender",
-  MID: "Midfielder",
-  FWD: "Forward",
-} as const;
-
 export const GROUP_TYPES = {
   league: "League",
   cup: "Cup Competition",
@@ -19,12 +12,7 @@ export const GROUP_STATUS = {
 
 export interface GroupFormData {
   name: string;
-  type: typeof GROUP_TYPES;
-  description: string;
-  maxParticipants: number;
-  startDate: string;
-  endDate: string;
   entryFee: number;
-  rules: string;
+  matchWeek: number;
 }
 

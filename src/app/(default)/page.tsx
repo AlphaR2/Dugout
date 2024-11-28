@@ -78,25 +78,28 @@ export default function Home() {
                     transition={{ delay: 0.9 }}
                     className="flex gap-4"
                   >
-                    <Link href="/auth">
+                    {/* <Link href="/"> */}
+                    <button
+                      // aria-disabled
+                      disabled
+                      // whileHover={{ scale: 1.02 }}
+                      // whileTap={{ scale: 0.98 }}
+                      className="px-8 py-4 bg-[#fca311] text-black rounded-xl font-bold flex items-center gap-2"
+                    >
+                      <GiWhistle className="text-xl" />
+                      Start Managing
+                    </button>
+                    {/* </Link> */}
+                    <Link href="/demo">
                       <motion.button
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="px-8 py-4 bg-[#fca311] text-black rounded-xl font-bold flex items-center gap-2"
+                        className="px-8 py-4 bg-[#14213d] text-white rounded-xl font-bold flex items-center gap-2 hover:bg-[#14213d]/80"
                       >
-                        <GiWhistle className="text-xl" />
-                        Start Managing
+                        <FaPlayCircle className="text-xl" />
+                        Try Demo
                       </motion.button>
                     </Link>
-                    <motion.button
-                      disabled
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="px-8 py-4 bg-[#14213d] text-white rounded-xl font-bold flex items-center gap-2 hover:bg-[#14213d]/80"
-                    >
-                      <FaPlayCircle className="text-xl" />
-                      Watch Demo
-                    </motion.button>
                   </motion.div>
                 </div>
 

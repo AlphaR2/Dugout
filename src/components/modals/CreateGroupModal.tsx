@@ -1,36 +1,62 @@
-// components/modals/CreateGroupModal.tsx
 "use client";
-import { useState } from "react";
-import { FaTimes } from "react-icons/fa";
-import { AnimatePresence, motion } from "framer-motion";
-import { GROUP_TYPES, GroupFormData } from "../../../utils/constants";
+
+import { useState, useEffect } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import * as web3 from "@solana/web3.js";
+import { generateGroupId } from "../../../utils/test/generate";
+import { FaTimes, FaCopy } from "react-icons/fa";
+import { toast } from "react-hot-toast";
+import { motion, AnimatePresence } from "framer-motion";
+import { useGroupProgram } from "@/hooks/test/useGroup";
+
+const ENTRY_FEE = 0.05 * web3.LAMPORTS_PER_SOL;
 
 interface CreateGroupModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: GroupFormData) => void;
 }
 
 export const CreateGroupModal = ({
   isOpen,
   onClose,
-  onSubmit,
 }: CreateGroupModalProps) => {
-  const [formData, setFormData] = useState<GroupFormData>({
+  const { publicKey } = useWallet();
+  const { program, createGroup } = useGroupProgram();
+  const [isLoading, setIsLoading] = useState(false);
+  const [groupId, setGroupId] = useState<string>("");
+  const [formData, setFormData] = useState({
     name: "",
-    type: GROUP_TYPES,
-    description: "",
-    maxParticipants: 20,
-    startDate: "",
-    endDate: "",
-    entryFee: 0,
-    rules: "",
+    matchWeek: 1,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
-    onClose();
+    if (!publicKey || !formData.name.trim() || !program) return;
+
+    try {
+      setIsLoading(true);
+      const newGroupId = generateGroupId(formData.name);
+      setGroupId(newGroupId);
+
+      const tx = await createGroup(newGroupId, ENTRY_FEE, formData.matchWeek);
+
+      toast.success(
+        "Group created successfully! Transaction: " + tx.substring(0, 8) + "..."
+      );
+      onClose();
+    } catch (error: any) {
+      console.error("Error:", error);
+      toast.error(error.message || "Failed to create group");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const copyGroupId = () => {
+    if (groupId) {
+      navigator.clipboard.writeText(groupId);
+      toast.success("Group ID copied to clipboard!");
+    }
   };
 
   return (
@@ -43,153 +69,131 @@ export const CreateGroupModal = ({
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
         >
           <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.95, opacity: 0 }}
-            className="bg-[#14213d] rounded-2xl w-full max-w-lg overflow-hidden"
+            initial={{ scale: 0.95 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0.95 }}
+            className="bg-[#14213d] rounded-2xl w-full max-w-lg max-h-[28rem] overflow-y-auto"
           >
-            <div className="relative p-6 border-b border-white/10">
-              <h2 className="text-2xl font-bold text-white">
-                Create New Group
-              </h2>
-              <button
-                onClick={onClose}
-                className="absolute top-6 right-6 text-gray-400 hover:text-white"
-              >
-                <FaTimes />
-              </button>
+            <div className="p-6 border-b border-white/10">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-white">
+                  Create New Group
+                </h2>
+                <button
+                  onClick={onClose}
+                  className="p-2 hover:bg-white/5 rounded-lg transition-colors"
+                >
+                  <FaTimes className="text-gray-400" />
+                </button>
+              </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            <form onSubmit={handleCreate} className="p-6 space-y-4">
               <div>
-                <label className="text-sm text-gray-400 mb-2 block">
+                <label className="text-sm text-gray-400 block mb-2">
                   Group Name
                 </label>
                 <input
                   value={formData.name}
                   onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
+                    setFormData((prev) => ({ ...prev, name: e.target.value }))
                   }
                   placeholder="Enter group name"
-                  className="bg-[#000a16] border-white/10"
-                  required
+                  className="w-full px-4 py-3 bg-[#000a16] border border-white/10 rounded-xl 
+                    text-white focus:border-[#fca311] outline-none transition-colors"
                 />
               </div>
 
               <div>
-                <label className="text-sm text-gray-400 mb-2 block">Type</label>
-                {/* <select
-                  value={formData.type}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      type: GROUP_TYPES,
-                    })
-                  }
-                  className="w-full bg-[#000a16] border border-white/10 rounded-lg p-2 text-white"
-                  required
-                >
-                  {Object.entries(GROUP_TYPES).map(([key, value]) => (
-                    <option key={key} value={key}>
-                      {value}
-                    </option>
-                  ))}
-                </select> */}
-              </div>
-
-              <div>
-                <label className="text-sm text-gray-400 mb-2 block">
-                  Description
+                <label className="text-sm text-gray-400 block mb-2">
+                  Entry Fee
                 </label>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
-                  }
-                  placeholder="Enter group description"
-                  className="bg-[#000a16] border-white/10"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm text-gray-400 mb-2 block">
-                    Start Date
-                  </label>
-                  <input
-                    type="date"
-                    value={formData.startDate}
-                    onChange={(e) =>
-                      setFormData({ ...formData, startDate: e.target.value })
-                    }
-                    className="bg-[#000a16] border-white/10"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="text-sm text-gray-400 mb-2 block">
-                    End Date
-                  </label>
-                  <input
-                    type="date"
-                    value={formData.endDate}
-                    onChange={(e) =>
-                      setFormData({ ...formData, endDate: e.target.value })
-                    }
-                    className="bg-[#000a16] border-white/10"
-                  />
+                <div className="px-4 py-3 bg-[#000a16] border border-white/10 rounded-xl text-white">
+                  {ENTRY_FEE / web3.LAMPORTS_PER_SOL} SOL
                 </div>
               </div>
 
               <div>
-                <label className="text-sm text-gray-400 mb-2 block">
-                  Maximum Participants
+                <label className="text-sm text-gray-400 block mb-2">
+                  Match Week
                 </label>
                 <input
                   type="number"
-                  value={formData.maxParticipants}
+                  min="1"
+                  max="38"
+                  value={formData.matchWeek}
                   onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      maxParticipants: parseInt(e.target.value),
-                    })
+                    setFormData((prev) => ({
+                      ...prev,
+                      matchWeek: parseInt(e.target.value),
+                    }))
                   }
-                  min={2}
-                  max={50}
-                  className="bg-[#000a16] border-white/10"
+                  className="w-full px-4 py-3 bg-[#000a16] border border-white/10 rounded-xl 
+                    text-white focus:border-[#fca311] outline-none transition-colors"
                 />
               </div>
 
-              <div>
-                <label className="text-sm text-gray-400 mb-2 block">
-                  Rules & Guidelines
-                </label>
-                <textarea
-                  value={formData.rules}
-                  onChange={(e) =>
-                    setFormData({ ...formData, rules: e.target.value })
-                  }
-                  placeholder="Enter group rules and guidelines"
-                  className="bg-[#000a16] border-white/10"
-                />
-              </div>
+              {groupId && (
+                <div className="mt-4 p-4 bg-[#fca311]/10 rounded-xl">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="text-white font-medium">Group ID</h4>
+                      <p className="text-sm text-gray-400">Click to copy</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={copyGroupId}
+                      className="p-2 hover:bg-white/5 rounded-lg transition-colors"
+                    >
+                      <FaCopy className="text-[#fca311]" />
+                    </button>
+                  </div>
+                  <div
+                    onClick={copyGroupId}
+                    className="mt-2 font-mono text-sm bg-[#000a16] p-2 rounded-lg text-white cursor-pointer hover:bg-[#000a16]/80"
+                  >
+                    {groupId}
+                  </div>
+                </div>
+              )}
 
-              <div className="flex justify-end space-x-3">
+              {!publicKey && (
+                <div className="bg-yellow-500/10 text-yellow-500 p-4 rounded-xl text-sm">
+                  ⚠️ Please connect your wallet to create a group
+                </div>
+              )}
+            </form>
+
+            <div className="p-6 border-t border-white/10">
+              <div className="flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="border-white/10 text-white hover:bg-white/5"
+                  className="px-4 py-2 text-white hover:bg-white/5 rounded-lg"
                 >
                   Cancel
                 </button>
                 <button
-                  type="submit"
-                  className="bg-[#fca311] hover:bg-[#fca311]/90 text-black"
+                  onClick={handleCreate}
+                  disabled={!publicKey || isLoading || !formData.name.trim()}
+                  className={`px-4 py-2 rounded-lg font-medium flex items-center
+                    ${
+                      publicKey && !isLoading && formData.name.trim()
+                        ? "bg-[#fca311] hover:bg-[#fca311]/90 text-black"
+                        : "bg-gray-600 text-gray-300 cursor-not-allowed"
+                    }`}
                 >
-                  Create Group
+                  {isLoading ? (
+                    <>
+                      <span className="mr-2">Creating...</span>
+                      <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                    </>
+                  ) : (
+                    "Create Group"
+                  )}
                 </button>
               </div>
-            </form>
+            </div>
           </motion.div>
         </motion.div>
       )}
@@ -197,7 +201,6 @@ export const CreateGroupModal = ({
   );
 };
 
-// components/modals/JoinGroupModal.tsx
 export const JoinGroupModal = ({
   isOpen,
   onClose,
@@ -205,27 +208,31 @@ export const JoinGroupModal = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const { publicKey } = useWallet();
+  const { program, joinGroup } = useGroupProgram();
+  const [isLoading, setIsLoading] = useState(false);
+  const [groupId, setGroupId] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock data - Replace with actual API call
-  const availableGroups = [
-    {
-      id: "1",
-      name: "Premier League 2024",
-      type: "league",
-      participants: 18,
-      maxParticipants: 20,
-      startDate: "2024-08-01",
-    },
-    {
-      id: "2",
-      name: "Champions Cup",
-      type: "cup",
-      participants: 12,
-      maxParticipants: 16,
-      startDate: "2024-07-15",
-    },
-  ];
+  const handleJoin = async () => {
+    if (!publicKey || !groupId.trim() || !program) return;
+
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const tx = await joinGroup(groupId, ENTRY_FEE);
+      toast.success(
+        "Successfully joined group! Transaction: " + tx.substring(0, 8) + "..."
+      );
+      onClose();
+    } catch (error: any) {
+      console.error("Error joining group:", error);
+      setError(error.message || "Failed to join group");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -237,56 +244,79 @@ export const JoinGroupModal = ({
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
         >
           <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.95, opacity: 0 }}
-            className="bg-[#14213d] rounded-2xl w-full max-w-lg"
+            initial={{ scale: 0.95 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0.95 }}
+            className="bg-[#14213d] rounded-2xl w-full max-w-lg max-h-[32rem] overflow-y-auto"
           >
-            <div className="relative p-6 border-b border-white/10">
-              <h2 className="text-2xl font-bold text-white">Join a Group</h2>
-              <button
-                onClick={onClose}
-                className="absolute top-6 right-6 text-gray-400 hover:text-white"
-              >
-                <FaTimes />
-              </button>
+            <div className="p-6 border-b border-white/10">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-white">Join Group</h2>
+                <button
+                  onClick={onClose}
+                  className="p-2 hover:bg-white/5 rounded-lg transition-colors"
+                >
+                  <FaTimes className="text-gray-400" />
+                </button>
+              </div>
+              <p className="text-sm text-gray-400 mt-1">
+                Entry Fee: {ENTRY_FEE / web3.LAMPORTS_PER_SOL} SOL
+              </p>
             </div>
 
-            <div className="p-6">
-              <input
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search groups..."
-                className="bg-[#000a16] border-white/10 mb-6"
-              />
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="text-sm text-gray-400 block mb-2">
+                  Group ID
+                </label>
+                <input
+                  value={groupId}
+                  onChange={(e) => {
+                    setGroupId(e.target.value);
+                    setError(null);
+                  }}
+                  placeholder="Enter group ID"
+                  className={`w-full px-4 py-3 bg-[#000a16] border rounded-xl 
+                    text-white focus:border-[#fca311] outline-none transition-colors
+                    ${error ? "border-red-500" : "border-white/10"}`}
+                />
+                {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+              </div>
 
-              <div className="space-y-4">
-                {availableGroups.map((group) => (
-                  <div
-                    key={group.id}
-                    className="bg-[#000a16] rounded-xl p-4 hover:bg-[#000a16]/70 transition-colors"
-                  >
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h3 className="text-white font-bold">{group.name}</h3>
-                        <p className="text-sm text-gray-400 capitalize">
-                          {GROUP_TYPES[group.type as keyof typeof GROUP_TYPES]}
-                        </p>
-                      </div>
-                      <button className="bg-[#fca311] hover:bg-[#fca311]/90 text-black">
-                        Join
-                      </button>
-                    </div>
-                    <div className="flex items-center gap-4 text-sm text-gray-400">
-                      <span>
-                        {group.participants}/{group.maxParticipants} Teams
-                      </span>
-                      <span>
-                        Starts {new Date(group.startDate).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+              {!publicKey && (
+                <div className="bg-yellow-500/10 text-yellow-500 p-4 rounded-xl text-sm">
+                  ⚠️ Please connect your wallet to join a group
+                </div>
+              )}
+            </div>
+
+            <div className="p-6 border-t border-white/10">
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={onClose}
+                  className="px-4 py-2 text-white hover:bg-white/5 rounded-lg"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleJoin}
+                  disabled={!publicKey || !groupId.trim() || isLoading}
+                  className={`px-4 py-2 rounded-lg font-medium flex items-center
+                    ${
+                      publicKey && groupId.trim() && !isLoading
+                        ? "bg-[#fca311] hover:bg-[#fca311]/90 text-black"
+                        : "bg-gray-600 text-gray-300 cursor-not-allowed"
+                    }`}
+                >
+                  {isLoading ? (
+                    <>
+                      <span className="mr-2">Joining...</span>
+                      <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                    </>
+                  ) : (
+                    "Join Group"
+                  )}
+                </button>
               </div>
             </div>
           </motion.div>

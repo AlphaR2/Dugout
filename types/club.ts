@@ -7,17 +7,6 @@ export interface Club {
   createdAt?: Date;
 }
 
-export interface Player {
-  id: string;
-  name: string;
-  position: "GK" | "DEF" | "MID" | "FWD";
-  rating: number;
-  nationality: string;
-  age: number;
-  form: number;
-  image?: string;
-}
-
 export interface Group {
   id: string;
   name: string;

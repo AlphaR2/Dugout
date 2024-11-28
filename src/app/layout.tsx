@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { StoreProvider } from "../../store/provider";
 import Providers from "@/components/Provider";
+import WalletContextProvider from "@/components/contexts/ClientWalletProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,9 +33,11 @@ export default function RootLayout({
           <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased tracking-tight`}
           >
-            <div className="flex flex-col justify-between min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
-              {children}
-            </div>
+            <WalletContextProvider>
+              <div className="flex flex-col justify-between min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
+                {children}
+              </div>
+            </WalletContextProvider>
           </body>
         </html>
       </Providers>
